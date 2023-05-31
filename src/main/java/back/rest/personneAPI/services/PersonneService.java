@@ -2,11 +2,13 @@ package back.rest.personneAPI.services;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import back.rest.personneAPI.entities.Personne;
+import back.rest.personneAPI.entities.PersonneAvecAge;
 import back.rest.personneAPI.repositories.PersonneRepository;
 
 
@@ -29,14 +31,20 @@ public class PersonneService {
         return personneRepository.save(personne);
     }
 
-    public List<Personne> getAllPersonnes() {
+    public List<PersonneAvecAge> getAllPersonnes() {
         List<Personne> personnes = personneRepository.findAllByOrderByNom();
+        
+        List<PersonneAvecAge> personnesAvecAge = new ArrayList<>();
+        
         LocalDate dateCourant = LocalDate.now();
-        personnes.forEach(p -> {
-            int age = Period.between(p.getDateNaissance(), dateCourant).getYears();
-            LocalDate dateNaissance = dateCourant.minusYears(age);
-            p.setDateNaissance(dateNaissance);
-        });
-        return personnes;
+        for (Personne personne : personnes) {
+            LocalDate dateNaissance = personne.getDateNaissance();
+            int age = Period.between(dateNaissance, dateCourant).getYears();
+            PersonneAvecAge personneAvecAge = new PersonneAvecAge(personne, age);
+            personnesAvecAge.add(personneAvecAge);
+         
+        }
+        return personnesAvecAge;
+    
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import back.rest.personneAPI.entities.Personne;
+import back.rest.personneAPI.entities.PersonneAvecAge;
 import back.rest.personneAPI.services.PersonneService;
 
 
@@ -30,7 +31,7 @@ public class PersonneController {
     }
 
     @GetMapping("/list")
-    public List<Personne> getAllPersonnes() {
+    public List<PersonneAvecAge> getAllPersonnes() {
     return personneService.getAllPersonnes();
     }
 
